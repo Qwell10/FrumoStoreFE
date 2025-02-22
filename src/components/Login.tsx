@@ -27,26 +27,40 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   width: "100%",
 }));
 
-const StyledButton = styled(Button)(({ theme }) => ({
-  marginTop: theme.spacing(2),
-  width: "100%",
-}));
-
 function login() {
-  const [username, setUsername] = useState("");
+  const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async () => {
+    console.log("username:", nickname);
+    console.log("password: ", password);
     try {
-      const response = await axios.post("http://localhost:8080/login", {
-        username,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:8080/login",
+        {
+          nickname,
+          password,
+        },
 
-      console.log("Login succesful:", response.data);
-      navigate("/goods");
+        {
+          timeout: 5000,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Login response:", response.data);
+
+      if (response.data.success) {
+        console.log("Login successful:", response.data);
+        navigate("/goods");
+      } else {
+        console.log("Login failed:", response.data.message);
+        setError(response.data.message);
+      }
     } catch (error) {
       console.error("Login failed:", error);
       setError("Invalid username or password");
@@ -63,8 +77,8 @@ function login() {
           <StyledTextField
             label="Uživatelské jméno"
             variant="outlined"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={nickname}
+            onChange={(e) => setNickname(e.target.value)}
             fullWidth
             required
           />
@@ -77,9 +91,9 @@ function login() {
             fullWidth
             required
           />
-          <StyledButton variant="contained" color="primary" type="submit">
-            Přihlásit
-          </StyledButton>
+          <Button variant="contained" onClick={handleSubmit}>
+            Přihlasit se
+          </Button>
         </form>
       </StyledBox>
     </StyledContainer>

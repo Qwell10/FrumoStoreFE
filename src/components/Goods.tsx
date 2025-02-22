@@ -62,19 +62,19 @@ export default function goods() {
       sx={{
         "& > :not(style)": { m: 3, width: "ch" },
         "& .MuiOutlinedInput-root": {
-          color: "white",
+          color: "black",
           "& fieldset": {
-            borderColor: "white",
+            borderColor: "black",
           },
           "&:hover fieldset": {
-            borderColor: "white",
+            borderColor: "black",
           },
           "&.Mui-focused fieldset": {
-            borderColor: "white",
+            borderColor: "black",
           },
         },
         "& .MuiInputLabel-root": {
-          color: "white",
+          color: "black",
         },
       }}
     >
@@ -128,7 +128,6 @@ export default function goods() {
           Ukázat
         </Button>
       </Stack>
-
     </Container>
   );
 }
