@@ -12,17 +12,29 @@ export default function goods() {
   const [boxes, setBoxes] = useState("");
 
 
-  const handleClickSaveNewIncome = () => {
+  const handleClickSaveNewIncome = async () => {
     const newIncome = { weight };
     console.log(newIncome);
-    fetch("http://localhost:8080/goods/newIncome", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newIncome),
-    }).then(() => {
-      console.log("New income was saved to database");
-    });
-  };
+
+    try {
+        const response = await fetch("http://localhost:8080/goods/newIncome", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newIncome),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json(); 
+            throw new Error(`HTTP error! status: ${response.status}, message: ${errorData?.message || response.statusText}`); 
+        }
+
+        console.log("New income goods was saved to database.");
+
+    } catch (error) {
+        console.error("Error saving new income:", error);
+        alert("An error occurred while saving the income. Please try again later."); 
+    } 
+};
 
   const handleClickWaste = () => {
     const newWaste = {waste};
